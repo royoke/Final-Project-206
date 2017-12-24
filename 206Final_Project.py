@@ -130,87 +130,89 @@ def make_graph(graph_type, platform1, datatype1, platform2='', datatype2=''):
 	fb_colors = ['rgba(52,102,150,1)','rgba(52,102,150,1)','rgba(52,102,150,1)','rgba(52,102,150,1)','rgba(52,102,150,1)','rgba(52,102,150,1)','rgba(52,102,150,1)'] # colors for any facebook data in plotly
 	insta_colors = ['rgba(180,67,71,1)','rgba(180,67,71,1)','rgba(180,67,71,1)','rgba(180,67,71,1)','rgba(180,67,71,1)','rgba(180,67,71,1)','rgba(180,67,71,1)'] # colors for any instagram data in plotly
 	weekday_colors = ['#a63030', '#30a4a6', '#a66b30', '#3e30a6', '#3ea630','#3090a6', '#d6cf00' ]
-	try: 
-		if platform1 == 'Facebook' or platform1 == 'facebook' or platform1 == 'fb': # taking user input and turning it into dictionary keys
-			if datatype1 == 'likes':
-				data1 = 'fb_likes'
-			if datatype1 == 'posts':
-				data1 = 'fb_posts'
-		if platform1 == 'Instagram' or platform1 == 'instagram' or platform1 == 'insta':
-			if datatype1 == 'likes':
-				data1 = 'insta_likes'
-			if datatype1 == 'posts':
-				data1 = 'insta_posts'
-		if platform2 == 'Facebook' or platform2 == 'facebook' or platform2 == 'fb':
-			if datatype2 == 'likes':
-				data2 = 'fb_likes'
-			if datatype2 == 'posts':
-				data2 = 'fb_posts'
-		if platform2 == 'Instagram' or platform2 == 'instagram' or platform2 == 'insta':
-			if datatype2 == 'likes':
-				data2 = 'insta_likes'
-			if datatype2 == 'posts':
-				data2 = 'insta_posts'
+	 
+	if platform1 == 'Facebook' or platform1 == 'facebook' or platform1 == 'fb': # taking user input and turning it into dictionary keys
+		if datatype1 == 'likes':
+			data1 = 'fb_likes'
+		if datatype1 == 'posts':
+			data1 = 'fb_posts'
+	if platform1 == 'Instagram' or platform1 == 'instagram' or platform1 == 'insta':
+		if datatype1 == 'likes':
+			data1 = 'insta_likes'
+		if datatype1 == 'posts':
+			data1 = 'insta_posts'
+	if platform2 == 'Facebook' or platform2 == 'facebook' or platform2 == 'fb':
+		if datatype2 == 'likes':
+			data2 = 'fb_likes'
+		if datatype2 == 'posts':
+			data2 = 'fb_posts'
+	if platform2 == 'Instagram' or platform2 == 'instagram' or platform2 == 'insta':
+		if datatype2 == 'likes':
+			data2 = 'insta_likes'
+		if datatype2 == 'posts':
+			data2 = 'insta_posts'
+	try:
 		data1_info = get_weekday_dict(data1)
 		if datatype2 != '':
 			data2_info = get_weekday_dict(data2)
-
-		if graph_type == 'bar chart' or graph_type == 'bar graph': # making a bar graph out of data 
-			if 'fb' in data1:
-				trace1 = go.Bar(x = weekdays_list, y = [data1_info[day] for day in weekdays_list], name = data1, marker=dict(color=fb_colors))
-			else:
-				trace1 = go.Bar(x = weekdays_list, y = [data1_info[day] for day in weekdays_list], name = data1, marker=dict(color=insta_colors))
-			if 'fb' in data2:
-				trace2 = go.Bar(x = weekdays_list, y = [data2_info[day] for day in weekdays_list], name = data2, marker=dict(color=fb_colors))
-			else:
-				trace2 = go.Bar(x = weekdays_list, y = [data2_info[day] for day in weekdays_list], name = data2, marker=dict(color=insta_colors))
-			data = [trace1, trace2]
-			layout = go.Layout(barmode = 'group')
-			fig = go.Figure(data=data, layout=layout)
-			py.iplot(fig, filename=data1+' graphed against '+data2)
-			return 'All done! Check plotly for your graph'
-
-		if graph_type == 'pie chart'or graph_type == 'pie graph': # making a pie chart out of data
-			labels = weekdays_list
-			values = [data1_info[day] for day in weekdays_list]
-			colors = weekday_colors
-			trace = go.Pie(labels=labels, values=values, hoverinfo='label+percent', textinfo='value', textfont=dict(size=20),marker=dict(colors=colors, line=dict(color='#000000', width=2)))
-			py.iplot([trace], filename=data1+'pie chart')
-			return 'All done! Check plotly for your graph'
-
-		if graph_type == 'line plot' or graph_type == 'scatter plot':
-			if 'fb' in data1:
-				trace1 = go.Scatter(x = weekdays_list, y=[data1_info[day] for day in weekdays_list], name=data1, line=dict(color=('rgba(52,102,150,1)'),width=4))
-			else:
-				trace1 = go.Scatter(x = weekdays_list, y=[data1_info[day] for day in weekdays_list], name=data1, line=dict(color=('rgba(180,67,71,1)'),width=4))
-			if 'fb' in data2:
-				trace2 = go.Scatter(x = weekdays_list, y=[data2_info[day] for day in weekdays_list], name=data2, line=dict(color=('rgba(52,102,150,1)'),width=4))
-			else:
-				trace2 = go.Scatter(x = weekdays_list, y=[data2_info[day] for day in weekdays_list], name=data2, line=dict(color=('rgba(180,67,71,1)'),width=4))
-			data = [trace1,trace2]
-			layout = dict(title = data1+' and '+data2+' line plot', xaxis = dict(title='Day of the week'), yaxis = dict(title='Frequency of usage'))
-			fig = dict(data=data, layout=layout)
-			py.iplot(fig, filename=data1+' and '+data2+' line plot')
-			return 'All done! Check plotly for your graph'
 	except:
+		return 'Please make sure you are using the correct syntax and then try again'
+
+	if graph_type == 'bar chart' or graph_type == 'bar graph': # making a bar graph out of data 
+		if 'fb' in data1:
+			trace1 = go.Bar(x = weekdays_list, y = [data1_info[day] for day in weekdays_list], name = data1, marker=dict(color=fb_colors))
+		else:
+			trace1 = go.Bar(x = weekdays_list, y = [data1_info[day] for day in weekdays_list], name = data1, marker=dict(color=insta_colors))
+		if 'fb' in data2:
+			trace2 = go.Bar(x = weekdays_list, y = [data2_info[day] for day in weekdays_list], name = data2, marker=dict(color=fb_colors))
+		else:
+			trace2 = go.Bar(x = weekdays_list, y = [data2_info[day] for day in weekdays_list], name = data2, marker=dict(color=insta_colors))
+		data = [trace1, trace2]
+		layout = go.Layout(barmode = 'group')
+		fig = go.Figure(data=data, layout=layout)
+		py.iplot(fig, filename=data1+' graphed against '+data2)
+		return 'All done! Check plotly for your graph'
+
+	if graph_type == 'pie chart' or graph_type == 'pie graph':
+		labels = weekdays_list
+		values = [data1_info[day] for day in weekdays_list]
+		colors = weekday_colors
+		trace = go.Pie(labels=labels, values=values, hoverinfo='label+percent', textinfo='value', textfont=dict(size=20),marker=dict(colors=colors, line=dict(color='#000000', width=2)))
+		py.iplot([trace], filename=data1+' pie chart')
+		return 'All done! Check plotly for your graph'
+
+	if graph_type == 'line plot' or graph_type == 'scatter plot':
+		if 'fb' in data1:
+			trace1 = go.Scatter(x = weekdays_list, y=[data1_info[day] for day in weekdays_list], name=data1, line=dict(color=('rgba(52,102,150,1)'),width=4))
+		else:
+			trace1 = go.Scatter(x = weekdays_list, y=[data1_info[day] for day in weekdays_list], name=data1, line=dict(color=('rgba(180,67,71,1)'),width=4))
+		if 'fb' in data2:
+			trace2 = go.Scatter(x = weekdays_list, y=[data2_info[day] for day in weekdays_list], name=data2, line=dict(color=('rgba(52,102,150,1)'),width=4))
+		else:
+			trace2 = go.Scatter(x = weekdays_list, y=[data2_info[day] for day in weekdays_list], name=data2, line=dict(color=('rgba(180,67,71,1)'),width=4))
+		data = [trace1,trace2]
+		layout = dict(title = data1+' and '+data2+' line plot', xaxis = dict(title='Day of the week'), yaxis = dict(title='Frequency of usage'))
+		fig = dict(data=data, layout=layout)
+		py.iplot(fig, filename=data1+' and '+data2+' line plot')
+		return 'All done! Check plotly for your graph'
+	else:
 		return 'Please make sure you are using the correct syntax and then try again'
 kernel.addPattern('Make a {graph_type} of my {platform1} {datatype1} and my {platform2} {datatype2}', make_graph)
 kernel.addPattern('Make a {graph_type} of my {platform1} {datatype1}', make_graph)
 ############################################################################################################################### Function to receive basic social media info
 def get_basic_info(data, platform):
-	try:
-		if data == 'friends' and platform == 'facebook' or platform == 'Facebook' or platform == 'fb':
-			return 'You have {} friends on Facebook'.format(str(CACHE_DICTION['fb_user_info']['summary']['total_count']))
+	if data == 'friends' and platform == 'facebook' or platform == 'Facebook' or platform == 'fb':
+		return 'You have {} friends on Facebook'.format(str(CACHE_DICTION['fb_user_info']['summary']['total_count']))
 
-		if platform == 'instagram' or platform == 'Instagram' or platform == 'insta':
-			if data == 'followers':
-				return 'You have {} followers on Instagram'.format(str(CACHE_DICTION['insta_user_info']['data']['counts']['followed_by']))
-			if data == 'posts':
-				return 'You have {} posts on Instagram'.format(str(CACHE_DICTION['insta_user_info']['data']['counts']['media']))
-			if data == 'follows':
-				return 'You follow {} people on Instagram'.format(str(CACHE_DICTION['insta_user_info']['data']['counts']['follows']))
-	except:
-		return 'Im sorry, I do not have access to that information or there is a typo'
+	if platform == 'instagram' or platform == 'Instagram' or platform == 'insta':
+		if data == 'followers':
+			return 'You have {} followers on Instagram'.format(str(CACHE_DICTION['insta_user_info']['data']['counts']['followed_by']))
+		if data == 'posts':
+			return 'You have {} posts on Instagram'.format(str(CACHE_DICTION['insta_user_info']['data']['counts']['media']))
+		if data == 'follows':
+			return 'You follow {} people on Instagram'.format(str(CACHE_DICTION['insta_user_info']['data']['counts']['follows']))
+	else:
+		return 'Im sorry! I do not have access to that information or there is a typo'
 
 kernel.addPattern('How many {data} do I have on {platform}', get_basic_info)
 ############################################################################################################################### While loop to run chatbot
